@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Mission 5 · Train Fragment · Opération Saint-Valentin</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 30% 30%, #1a0012, #0a0006);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', monospace;
+      padding: 0.5rem;
+      position: relative;
+    }
+
+    .film-grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 30%, #2a0015, #000000);
+      opacity: 0.9;
+      z-index: 0;
+    }
+
+    .vignette {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .scanline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent 50%, rgba(255, 40, 140, 0.03) 50%);
+      background-size: 100% 4px;
+      animation: scanMove 8s linear infinite;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    /* ALERTE ROUGE - VERSION TRAIN */
+    .alerte-train {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 0.5rem;
+      background: #8b0000;
+      color: white;
+      text-align: center;
+      font-weight: bold;
+      z-index: 100;
+      animation: clignoterTrain 0.3s infinite;
+      display: none;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    @keyframes clignoterTrain {
+      0% { background: #8b0000; text-shadow: 0 0 5px white; }
+      50% { background: #ff0000; text-shadow: 0 0 15px yellow; }
+      100% { background: #8b0000; text-shadow: 0 0 5px white; }
+    }
+
+    .timer-crash {
+      position: fixed;
+      top: 50px;
+      right: 10px;
+      background: black;
+      color: #ff4444;
+      padding: 0.5rem;
+      border-radius: 1rem;
+      border: 3px solid #ff0000;
+      font-size: 2.5rem;
+      font-weight: bold;
+      z-index: 100;
+      display: none;
+      box-shadow: 0 0 40px red;
+      font-family: monospace;
+    }
+
+    .distance-warning {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(0,0,0,0.8);
+      color: #ffaaaa;
+      padding: 0.3rem 1rem;
+      border-radius: 2rem;
+      border: 1px solid red;
+      font-size: 0.8rem;
+      z-index: 100;
+      display: none;
+    }
+
+    .cine-panel {
+      background: rgba(8, 0, 4, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 50, 120, 0.4);
+      border-radius: 2rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 0 2px rgba(255, 20, 100, 0.3) inset;
+      position: relative;
+      z-index: 30;
+    }
+
+    .btn-cine {
+      background: transparent;
+      border: 2px solid #ff3366;
+      color: #ffb0c8;
+      border-radius: 3rem;
+      padding: 0.8rem 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 0.8rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-cine:hover {
+      background: #ff2a8b;
+      color: black;
+      border-color: #ffccf0;
+      box-shadow: 0 0 30px #ff3b9b;
+    }
+
+    /* SIMULATEUR TRAIN - VERSION CRASH */
+    .cabine {
+      background: #2a2a2a;
+      background-image: linear-gradient(145deg, #3a3a3a 0%, #1a1a1a 100%);
+      border-radius: 2rem;
+      padding: 1.2rem;
+      border: 4px solid #ff6680;
+      box-shadow: 0 0 30px #ff3366, inset 0 0 20px #000;
+      position: relative;
+      color: #ffd9e6;
+    }
+
+    .windshield {
+      background: #0a1a2a;
+      background-image: linear-gradient(180deg, #1a3a5a 0%, #0a1a2a 80%);
+      border-radius: 2rem 2rem 1rem 1rem;
+      padding: 1rem;
+      border: 2px solid #99ccff;
+      margin-bottom: 1rem;
+      position: relative;
+      box-shadow: inset 0 0 30px #3a6a9a;
+      min-height: 120px;
+    }
+
+    /* MODE CRASH IMMINENT */
+    .crash-mode .windshield {
+      border-color: #ff0000;
+      animation: crashVibration 0.1s infinite;
+    }
+
+    @keyframes crashVibration {
+      0% { transform: translate(0); border-color: #ff0000; }
+      25% { transform: translate(-3px, 1px); border-color: #ff6666; }
+      50% { transform: translate(3px, -1px); border-color: #ff0000; }
+      75% { transform: translate(-2px, -2px); border-color: #ff6666; }
+      100% { transform: translate(0); border-color: #ff0000; }
+    }
+
+    .landscape {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      height: 60px;
+      margin-top: 0.5rem;
+    }
+
+    .obstacle {
+      width: 15px;
+      height: 40px;
+      background: #8b4513;
+      border-radius: 5px;
+      position: relative;
+      animation: approche 0.5s infinite alternate;
+    }
+
+    @keyframes approche {
+      from { transform: scale(1); }
+      to { transform: scale(1.3); }
+    }
+
+    .dashboard {
+      background: #1a1a1a;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      border: 2px solid #ff6680;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+    }
+
+    .gauge {
+      background: #0a0a0a;
+      border-radius: 1rem;
+      padding: 0.5rem;
+      text-align: center;
+      border: 1px solid #ff99bb;
+    }
+
+    .gauge-label {
+      font-size: 0.5rem;
+      color: #ff99bb;
+      text-transform: uppercase;
+    }
+
+    .gauge-value {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #ffccdd;
+    }
+
+    .distance-obstacle {
+      color: #ff6666;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-shadow: 0 0 15px red;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .lever {
+      flex: 1;
+      background: #3a3a3a;
+      height: 40px;
+      border-radius: 20px;
+      border: 2px solid #ff99bb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #ffccdd;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lever.active {
+      background: #ff3366;
+      color: white;
+      box-shadow: 0 0 20px #ff99bb;
+    }
+
+    /* QUIZ ULTRA PRESSION */
+    .quiz-panel {
+      background: rgba(0,0,0,0.7);
+      border-radius: 1.5rem;
+      padding: 1rem;
+      margin-top: 1rem;
+      border: 2px solid #ff0000;
+      position: relative;
+    }
+
+    .crash-indicator {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff0000;
+      color: white;
+      padding: 0.3rem 1.5rem;
+      border-radius: 2rem;
+      font-size: 0.7rem;
+      font-weight: bold;
+      white-space: nowrap;
+      animation: indicatorPulse 0.3s infinite;
+    }
+
+    @keyframes indicatorPulse {
+      0% { background: #ff0000; }
+      50% { background: #990000; }
+      100% { background: #ff0000; }
+    }
+
+    .question {
+      font-size: 0.9rem;
+      color: #ffccdd;
+      margin-bottom: 0.8rem;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .option {
+      background: rgba(255, 102, 128, 0.2);
+      border: 1px solid #ff99bb;
+      border-radius: 2rem;
+      padding: 0.8rem;
+      font-size: 0.8rem;
+      text-align: center;
+      color: #ffd9e6;
+      cursor: pointer;
+      transition: all 0.2s;
+      animation: apparitionOption 0.3s;
+    }
+
+    @keyframes apparitionOption {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .option.eliminated {
+      opacity: 0.1;
+      pointer-events: none;
+      text-decoration: line-through;
+      transform: scale(0.8);
+    }
+
+    .word-revealed {
+      background: rgba(255, 102, 128, 0.3);
+      border-radius: 1rem;
+      padding: 0.3rem 1rem;
+      display: inline-block;
+      font-size: 0.9rem;
+      color: #ffccdd;
+      border: 1px solid #ff99bb;
+      margin: 0.2rem;
+      animation: wordPop 0.5s;
+    }
+
+    @keyframes wordPop {
+      0% { transform: scale(0); background: #ff3366; }
+      70% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 450px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      z-index: 30;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .progress-bar-crash {
+      height: 10px;
+      background: linear-gradient(90deg, #00ff00, #ffff00, #ff0000);
+      border-radius: 5px;
+      transition: width 0.1s;
+      box-shadow: 0 0 20px red;
+    }
+
+    .glitch-effect {
+      animation: glitch 0.1s infinite;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); filter: hue-rotate(0deg); }
+      20% { transform: translate(-3px, 3px); filter: hue-rotate(20deg); }
+      40% { transform: translate(3px, -3px); filter: hue-rotate(-20deg); }
+    }
+  </style>
+</head>
+<body>
+    <!-- IFRAME MUSIQUE GLOBALE - À AJOUTER SUR CHAQUE PAGE -->
+<iframe src="player.html" style="position: absolute; width: 0; height: 0; border: 0;"></iframe>
+
+  <!-- ÉLÉMENTS TRAIN EN DANGER -->
+  <div class="alerte-train" id="alerteTrain">🚂 FRAGMENT EN DANGER · RISQUE DE PERTE DÉFINITIVE 🚂</div>
+  <div class="timer-crash" id="timerCrash">--s</div>
+  <div class="distance-warning" id="distanceWarning">⬇️ OBSTACLE À 100m</div>
+
+  <div class="film-grain"></div>
+  <div class="vignette"></div>
+  <div class="scanline"></div>
+
+  <div class="container">
+
+    <!-- EN-TÊTE MISSION -->
+    <div class="cine-panel py-3 px-4 text-center">
+      <h1 class="text-xl glow-pink text-pink-200 tracking-widest">
+        ⚡ MISSION 5 · TRAIN FRAGMENT
+      </h1>
+      <div class="text-[0.55rem] text-pink-400/60">
+        🚂 INTERVENTION À BORD · CODE ROUGE
+      </div>
+    </div>
+
+    <!-- INTRODUCTION AVEC STICH -->
+    <div id="introMission" class="cine-panel p-5 space-y-4">
+      <div class="flex justify-between items-center">
+        <span class="subtitle">🚨 RAPPORT D'URGENCE</span>
+        <span class="text-[0.55rem] text-red-400">FRAGMENT 5/7</span>
+      </div>
+
+      <div class="text-pink-100/90 text-sm p-2 bg-black/30 rounded-lg" id="introText">
+        <!-- Texte tapé ici -->
+      </div>
+
+      <button onclick="startMission()" id="startBtn" class="btn-cine">
+        🚂 INTERVENIR DANS LE TRAIN
+      </button>
+    </div>
+
+    <!-- SIMULATEUR TRAIN - CRASH IMMINENT -->
+    <div id="missionScreen" class="hidden cine-panel p-3 space-y-3">
+
+      <!-- CABINE EN MODE CRASH -->
+      <div class="cabine" id="cabineCrash">
+        
+        <!-- Pare-brise -->
+        <div class="windshield">
+          <div class="flex justify-between items-start">
+            <span class="text-xs text-blue-300">🚂 TRAIN 714 · FRAGMENT À BORD</span>
+            <span class="text-xs text-red-400" id="crashIndicator">💥 COLLISION DANS --s</span>
+          </div>
+          
+          <!-- Paysage avec obstacle qui approche -->
+          <div class="landscape" id="landscape">
+            <div class="obstacle" id="obstacle"></div>
+          </div>
+          
+          <!-- Alerte visuelle -->
+          <div id="signalLight" class="signal red" style="position: absolute; top: 10px; right: 10px;">🔴</div>
+        </div>
+
+        <!-- Tableau de bord critique -->
+        <div class="dashboard">
+          <div class="gauge">
+            <div class="gauge-label">VITESSE</div>
+            <div class="distance-obstacle" id="speedGauge">160</div>
+          </div>
+          <div class="gauge">
+            <div class="gauge-label">DISTANCE</div>
+            <div class="distance-obstacle" id="distanceGauge">100m</div>
+          </div>
+          <div class="gauge">
+            <div class="gauge-label">FRAGMENT</div>
+            <div class="gauge-value" id="fragmentGauge">100%</div>
+          </div>
+        </div>
+
+        <!-- Manettes de secours -->
+        <div class="controls">
+          <div class="lever" id="leverStart" onclick="startTrain()">▶ ACTIVER SYSTÈMES</div>
+          <div class="lever" id="leverStop" onclick="stopTrain()">⬛ FREINAGE</div>
+          <div class="lever" id="leverHorn" onclick="horn()">🔊 ALERTE</div>
+        </div>
+
+        <!-- Barre de collision -->
+        <div class="w-full bg-pink-900/30 rounded-full h-2 mt-2">
+          <div id="collisionProgress" class="progress-bar-crash" style="width: 0%"></div>
+        </div>
+
+        <!-- QUIZ DE SURVIE -->
+        <div id="quizContainer" class="quiz-panel hidden">
+          <div class="crash-indicator" id="crashText">💥 RÉPONDS OU ON VA PERCUTER 💥</div>
+          <div class="question" id="currentQuestion"></div>
+          <div class="options" id="optionsContainer"></div>
+          
+          <!-- Mots sauvés -->
+          <div class="mt-3 text-center" id="foundWords"></div>
+        </div>
+
+        <!-- Message en reconstruction -->
+        <div class="message-construction mt-2" id="messageConstruction">
+          <span class="text-pink-300">🚂 MESSAGE DU FRAGMENT :</span><br>
+          <span id="constructedMessage" class="font-bold"></span>
+        </div>
+
+      </div>
+
+      <!-- Réponse finale -->
+      <input type="text" id="decodeInput" placeholder="tape la phrase complète..." class="input-cine text-sm">
+      <button onclick="checkDecode()" id="checkBtn" class="btn-cine" disabled>VALIDER</button>
+      <p id="decodeError" class="text-sm h-5 text-center"></p>
+    </div>
+
+    <!-- SUCCÈS - FRAGMENT SAUVÉ -->
+    <div id="successScreen" class="hidden cine-panel p-6 text-center">
+      <span class="text-5xl mb-2">🚂❤️</span>
+      <h2 class="text-2xl glow-pink text-pink-200">FRAGMENT SAUVÉ IN EXTREMIS !</h2>
+      <div class="bg-pink-900/30 p-4 rounded-xl mt-4">
+        <p class="text-pink-100 text-sm">Message récupéré :</p>
+        <p class="text-lg font-bold text-pink-200">"je pourrai t'offrir bien plus que ce petit escape game"</p>
+      </div>
+      <div class="flex justify-center gap-4 text-xs text-pink-100/70">
+        <p>✓ Fragment 1: "Mon amour"</p>
+        <p>✓ Fragment 2: "QuanD J’auRai enfin Trouvé cet équilibre"</p>
+        <p>✓ Fragment 3: "JE T'AIME"</p>
+     
+        <p>✓ Fragment 4: "Même QuanD je ne le dis pAs"</p>
+        <p>✓ Fragment 5: "je pOUrrai t'oFFrir bieN plus que ce petit escApe game"</p>
+      </div>
+      <a href="mission6.html" class="btn-cine mt-4">MISSION 6 →</a>
+    </div>
+
+  </div>
+
+  <script>
+    // Le message à sauver
+    const fullPhrase = "je pourrai t'offrir bien plus que ce petit escape game";
+    const mots = ["je pourrai", "t'offrir", "bien plus", "que ce", "petit", "escape game"];
+
+    // Questions mélangées aléatoirement
+    const baseQuestions = [
+      {
+        q: "🚂 À quoi sert le sifflet ?",
+        options: ["Prévenir d'un danger", "Faire de la musique", "Réveiller les voyageurs", "Signaler un départ"],
+        correct: 0
+      },
+      {
+        q: "🛤️ Que signifie un feu rouge ?",
+        options: ["S'arrêter", "Accélérer", "Ralentir", "Changer de voie"],
+        correct: 0
+      },
+      {
+        q: "⚡ Qu'est-ce qu'une caténaire ?",
+        options: ["Fils électriques", "Frein d'urgence", "Système de chauffage", "Porte de secours"],
+        correct: 0
+      },
+      {
+        q: "🔄 À quoi sert une aiguille ?",
+        options: ["Changer de voie", "Arrêter le train", "Ouvrir les portes", "Déclencher l'alarme"],
+        correct: 0
+      },
+      {
+        q: "📏 Que mesure l'écartement ?",
+        options: ["La voie", "La vitesse", "Le poids", "La longueur"],
+        correct: 0
+      },
+      {
+        q: "🔧 Rôle du mécanicien ?",
+        options: ["Conduire le train", "Vendre des billets", "Servir au bar", "Nettoyer les rails"],
+        correct: 0
+      }
+    ];
+
+    // Mélanger les questions
+    let questions = [...baseQuestions].sort(() => Math.random() - 0.5);
+    
+    // Mélanger les options pour chaque question
+    questions.forEach(q => {
+      const correctAnswer = q.options[q.correct];
+      const allOptions = [...q.options];
+      // Mélanger
+      q.options = allOptions.sort(() => Math.random() - 0.5);
+      // Retrouver la nouvelle position de la bonne réponse
+      q.correct = q.options.indexOf(correctAnswer);
+    });
+
+    // Variables de mission
+    let currentQuestionIndex = 0;
+    let wordsFound = [];
+    let missionActive = false;
+    let distance = 100; // en mètres
+    let fragmentIntegrity = 100;
+    let interval;
+    let collisionInterval;
+
+    // STICH D'INTRODUCTION
+    const introText = `
+
+Un fragment du message a été localisé à bord du train TGV 714.
+Le train est actuellement en situation critique.
+
+[ANALYSE]\n
+Le fragment est instable. En cas d'accident ou de collision, il sera définitivement perdu.
+
+[OBJECTIF]
+Stabiliser le fragment en répondant aux questions.
+Chaque bonne réponse renforce l'intégrité du message.
+Chaque mauvaise réponse rapproche le train de l'obstacle.
+
+[TEMPS RESTANT]
+La collision est imminente. La distance avec l'obstacle diminue à chaque seconde.
+
+Interviens maintenant ou le fragment disparaîtra à jamais.`;
+
+    let i = 0;
+    const introEl = document.getElementById('introText');
+    function typeIntro() {
+      if (i < introText.length) {
+        introEl.innerHTML += introText.charAt(i);
+        i++;
+        setTimeout(typeIntro, 15);
+      }
+    }
+    typeIntro();
+
+    function startMission() {
+      document.getElementById('introMission').classList.add('hidden');
+      document.getElementById('missionScreen').classList.remove('hidden');
+      startCrashSequence();
+    }
+
+    function startCrashSequence() {
+      // Afficher les alertes
+      document.getElementById('alerteTrain').style.display = 'block';
+      document.getElementById('timerCrash').style.display = 'block';
+      document.getElementById('distanceWarning').style.display = 'block';
+      
+      missionActive = true;
+      document.getElementById('cabineCrash').classList.add('crash-mode');
+      document.getElementById('quizContainer').classList.remove('hidden');
+      
+      // Lancer le compte à rebours de collision
+      distance = 100;
+      updateDistance();
+      
+      collisionInterval = setInterval(() => {
+        if (!missionActive) return;
+        
+        distance -= 2; // Réduction rapide de la distance
+        updateDistance();
+        
+        if (distance <= 0) {
+          // CRASH - MISSION ÉCHOUÉE
+          clearInterval(collisionInterval);
+          alert("💥 COLLISION · FRAGMENT DÉTRUIT · MISSION ÉCHOUÉE");
+          location.reload();
+        }
+      }, 300);
+      
+      showNextQuestion();
+    }
+
+    function updateDistance() {
+      document.getElementById('distanceGauge').textContent = Math.max(0, distance) + 'm';
+      document.getElementById('timerCrash').textContent = Math.ceil(distance / 5) + 's';
+      document.getElementById('distanceWarning').innerHTML = `⬇️ OBSTACLE À ${Math.max(0, distance)}m`;
+      
+      // Barre de progression
+      const progress = 100 - distance;
+      document.getElementById('collisionProgress').style.width = progress + '%';
+      
+      // Changer la couleur selon la distance
+      if (distance < 20) {
+        document.getElementById('timerCrash').style.color = '#ff0000';
+        document.getElementById('timerCrash').style.fontSize = '3rem';
+      } else if (distance < 50) {
+        document.getElementById('timerCrash').style.color = '#ff6666';
+      }
+    }
+
+    window.startTrain = function() {
+      // Simule l'activation des systèmes
+      document.getElementById('leverStart').classList.add('active');
+    };
+
+    window.stopTrain = function() {
+      // Freinage d'urgence - gagne un peu de distance
+      if (missionActive) {
+        distance += 5;
+        if (distance > 100) distance = 100;
+        updateDistance();
+      }
+    };
+
+    window.horn = function() {
+      document.getElementById('leverHorn').classList.add('active');
+      setTimeout(() => {
+        document.getElementById('leverHorn').classList.remove('active');
+      }, 200);
+    };
+
+    function showNextQuestion() {
+      if (currentQuestionIndex >= questions.length) {
+        // Plus de questions - fragment stabilisé
+        document.getElementById('currentQuestion').textContent = "🎉 FRAGMENT STABILISÉ !";
+        document.getElementById('optionsContainer').innerHTML = '';
+        document.getElementById('crashText').textContent = '✅ FRAGMENT SAUVÉ';
+        document.getElementById('checkBtn').disabled = false;
+        clearInterval(collisionInterval);
+        document.getElementById('alerteTrain').style.display = 'none';
+        document.getElementById('timerCrash').style.display = 'none';
+        document.getElementById('distanceWarning').style.display = 'none';
+        return;
+      }
+      
+      const q = questions[currentQuestionIndex];
+      document.getElementById('currentQuestion').textContent = q.q;
+      
+      let optionsHtml = '';
+      q.options.forEach((opt, index) => {
+        optionsHtml += `<div class="option" data-q="${currentQuestionIndex}" data-opt="${index}" onclick="selectOption(this, ${index}, ${q.correct})">${opt}</div>`;
+      });
+      document.getElementById('optionsContainer').innerHTML = optionsHtml;
+    }
+
+    window.selectOption = function(element, selectedIndex, correctIndex) {
+      const qIndex = currentQuestionIndex;
+      
+      if (selectedIndex === correctIndex) {
+        // BONNE RÉPONSE
+        element.style.background = '#4caf50';
+        
+        // Désactiver les options
+        document.querySelectorAll(`.option[data-q="${qIndex}"]`).forEach(opt => {
+          opt.style.pointerEvents = 'none';
+        });
+        
+        // Ajouter le mot
+        wordsFound.push(mots[qIndex]);
+        updateFoundWords();
+        
+        // GAGNER DE LA DISTANCE (reculer l'obstacle)
+        distance += 15;
+        if (distance > 100) distance = 100;
+        updateDistance();
+        
+        currentQuestionIndex++;
+        
+        setTimeout(() => {
+          showNextQuestion();
+        }, 500);
+        
+      } else {
+        // MAUVAISE RÉPONSE
+        element.classList.add('eliminated');
+        
+        // PERDRE DE LA DISTANCE
+        distance -= 10;
+        if (distance < 0) distance = 0;
+        updateDistance();
+        
+        // Perte d'intégrité du fragment
+        fragmentIntegrity -= 10;
+        if (fragmentIntegrity < 0) fragmentIntegrity = 0;
+        document.getElementById('fragmentGauge').textContent = fragmentIntegrity + '%';
+        
+        // Effet de choc
+        document.getElementById('cabineCrash').classList.add('glitch-effect');
+        setTimeout(() => {
+          document.getElementById('cabineCrash').classList.remove('glitch-effect');
+        }, 300);
+        
+        if (fragmentIntegrity <= 0) {
+          alert("❌ FRAGMENT DÉTRUIT · MISSION ÉCHOUÉE");
+          location.reload();
+        }
+      }
+    };
+
+    function updateFoundWords() {
+      let html = '';
+      wordsFound.forEach(word => {
+        html += `<span class="word-revealed">${word}</span> `;
+      });
+      document.getElementById('foundWords').innerHTML = html;
+      
+      let message = '';
+      for (let i = 0; i < mots.length; i++) {
+        if (i < wordsFound.length) {
+          message += wordsFound[i] + ' ';
+        } else {
+          message += '_____ ';
+        }
+      }
+      document.getElementById('constructedMessage').textContent = message;
+    }
+
+    window.checkDecode = function() {
+      const userAnswer = document.getElementById('decodeInput').value.trim().toLowerCase();
+      const errorEl = document.getElementById('decodeError');
+      
+      const cleanAnswer = userAnswer.replace(/[''’`]/g, "'").replace(/\s+/g, ' ').trim();
+      
+      if (cleanAnswer.includes("je pourrai t'offrir") && cleanAnswer.includes("bien plus") && cleanAnswer.includes("escape game")) {
+        errorEl.classList.add('text-green-400');
+        errorEl.textContent = '✔ FRAGMENT RÉCUPÉRÉ !';
+        
+        setTimeout(() => {
+          document.getElementById('missionScreen').classList.add('hidden');
+          document.getElementById('successScreen').classList.remove('hidden');
+        }, 1500);
+      } else {
+        errorEl.classList.add('text-red-400');
+        errorEl.textContent = '❌ FRAGMENT TOUJOURS INSTABLE';
+      }
+    };
+
+  </script>
+
+</body>
+</html>

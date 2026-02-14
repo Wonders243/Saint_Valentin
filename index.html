@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OPÉRATION SAINT-VALENTIN · DOSSIER CLASSÉ</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* Style cinématographique ULTRA */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000000;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', monospace;
+      padding: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ===== EFFETS SPECTACULAIRES ===== */
+
+    /* Grain de film analogique amélioré */
+    .film-grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 30%, #2a0015, #000000);
+      opacity: 0.9;
+      z-index: 0;
+    }
+
+    .film-grain::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-radial-gradient(circle at 20% 30%, rgba(255,255,255,0.02) 0px, transparent 2px);
+      background-size: 4px 4px;
+      pointer-events: none;
+      animation: grainFlicker 0.2s infinite;
+    }
+
+    @keyframes grainFlicker {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+    }
+
+    /* Vignettage cinéma renforcé */
+    .vignette {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0 0 200px rgba(0,0,0,0.95), inset 0 0 100px #ff336640;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Scanlines dynamiques améliorées */
+    .scanline-cine {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 3px,
+        rgba(255, 40, 140, 0.04) 3px,
+        rgba(255, 40, 140, 0.04) 5px
+      );
+      background-size: 100% 5px;
+      animation: scanMove 12s linear infinite;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    @keyframes scanMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(100%); }
+    }
+
+    /* Glitch global aléatoire */
+    .global-glitch {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 7;
+      mix-blend-mode: overlay;
+      animation: randomGlitch 10s infinite;
+    }
+
+    @keyframes randomGlitch {
+      0%, 95%, 100% { opacity: 0; }
+      96% { opacity: 0.2; background: rgba(255,0,100,0.1); transform: translate(3px, -2px); }
+      97% { opacity: 0.15; background: rgba(0,255,200,0.1); transform: translate(-3px, 1px); }
+      98% { opacity: 0.1; background: rgba(255,255,0,0.1); transform: translate(2px, 2px); }
+      99% { opacity: 0.05; transform: translate(0); }
+    }
+
+    /* Éclairs aléatoires */
+    .lightning {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 50;
+      animation: lightningFlash 15s infinite;
+    }
+
+    @keyframes lightningFlash {
+      0%, 98%, 100% { opacity: 0; }
+      99% { opacity: 0.7; }
+      99.2% { opacity: 0.3; }
+      99.4% { opacity: 0.5; }
+      99.6% { opacity: 0.1; }
+    }
+
+    /* Effet projecteur amélioré */
+    .spotlight {
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 80, 150, 0.15), transparent 70%);
+      animation: spotlightMove 20s infinite alternate;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes spotlightMove {
+      0% { transform: translate(0%, 0%) rotate(0deg); }
+      100% { transform: translate(15%, 15%) rotate(10deg); }
+    }
+
+    /* Particules lumineuses */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(255, 100, 150, 0.5);
+      border-radius: 50%;
+      box-shadow: 0 0 10px #ff99bb;
+      animation: particleFloat 8s infinite linear;
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+    }
+
+    /* Panneaux cinéma améliorés */
+    .cine-panel {
+      background: rgba(8, 0, 4, 0.9);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 50, 120, 0.5);
+      border-radius: 2.5rem;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.95), 0 0 0 2px rgba(255, 20, 100, 0.4) inset, 0 0 50px #ff1a4d80;
+      position: relative;
+      z-index: 20;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Effet de lumière sur les bords amélioré */
+    .cine-panel::after {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #ff3388, #ff80bf, #b3005c, #ff3388);
+      border-radius: 2.5rem;
+      opacity: 0.15;
+      z-index: -1;
+      filter: blur(15px);
+      animation: borderGlow 4s infinite;
+    }
+
+    @keyframes borderGlow {
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Texte cinématographique amélioré */
+    .cine-title {
+      font-family: 'Courier New', monospace;
+      text-transform: uppercase;
+      letter-spacing: 10px;
+      font-weight: 900;
+      font-size: 1.6rem;
+      text-shadow: 0 0 30px #ff1a75, 0 0 60px #b3004d, 4px 4px 0 #000;
+      animation: titlePulse 3s infinite alternate;
+    }
+
+    @keyframes titlePulse {
+      0% { opacity: 0.8; text-shadow: 0 0 30px #ff1a75, 0 0 60px #b3004d; }
+      100% { opacity: 1; text-shadow: 0 0 50px #ff4da6, 0 0 80px #ff80bf, 0 0 120px #ff3366; }
+    }
+
+    /* Sous-titres style film améliorés */
+    .subtitle {
+      font-size: 0.7rem;
+      letter-spacing: 5px;
+      color: #ff99bb;
+      text-transform: uppercase;
+      border-bottom: 2px solid #ff3366;
+      display: inline-block;
+      padding-bottom: 0.3rem;
+      text-shadow: 0 0 15px #ff3366;
+    }
+
+    /* Boutons style mission impossible améliorés */
+    .btn-cine {
+      background: transparent;
+      border: 2px solid #ff3366;
+      color: #ffb0c8;
+      border-radius: 3rem;
+      padding: 0.9rem 1.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      font-size: 0.8rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+    }
+
+    .btn-cine::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 51, 102, 0.4), transparent);
+      transition: left 0.5s;
+      z-index: -1;
+    }
+
+    .btn-cine:hover::before {
+      left: 100%;
+    }
+
+    .btn-cine:hover {
+      background: #ff2a8b;
+      color: black;
+      border-color: #ffccf0;
+      box-shadow: 0 0 50px #ff3b9b, 0 0 100px #ff3366;
+      transform: scale(1.05);
+    }
+
+    .btn-cine:active {
+      transform: scale(0.95);
+    }
+
+    /* Input style film amélioré */
+    .input-cine {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #ff3366;
+      color: #ffc0e0;
+      border-radius: 3rem;
+      padding: 0.9rem 1.8rem;
+      font-size: 1rem;
+      outline: none;
+      width: 100%;
+      font-family: 'Courier New', monospace;
+      box-shadow: 0 0 30px rgba(255, 51, 102, 0.4);
+      transition: all 0.3s;
+    }
+
+    .input-cine:focus {
+      border-color: #ff80bf;
+      box-shadow: 0 0 50px #ff4d9e;
+      background: rgba(30, 0, 15, 0.95);
+      transform: scale(1.02);
+    }
+
+    /* Message corrompu amélioré */
+    .message-corrupted {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #ff99aa;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 1.2rem;
+      border-radius: 1.5rem;
+      border-left: 8px solid #ff3366;
+      word-break: break-word;
+      animation: glitchText 0.15s infinite;
+      box-shadow: 0 0 40px #ff3366;
+    }
+
+    @keyframes glitchText {
+      0% { text-shadow: 3px 0 #ff00c8, -3px 0 #00e0ff; }
+      25% { text-shadow: -4px 2px #ff00c8, 4px -2px #00e0ff; }
+      50% { text-shadow: 2px -3px #ff00c8, -2px 3px #00e0ff; }
+      75% { text-shadow: -3px -2px #ff00c8, 3px 2px #00e0ff; }
+      100% { text-shadow: 3px 0 #ff00c8, -3px 0 #00e0ff; }
+    }
+
+    /* Curseur cinéma amélioré */
+    .cine-cursor::after {
+      content: "▊";
+      margin-left: 0.3rem;
+      animation: cineBlink 0.8s infinite;
+      font-size: 1.3rem;
+      color: #ff99bb;
+      text-shadow: 0 0 15px #ff99bb;
+    }
+
+    @keyframes cineBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    /* Container */
+    .cine-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      z-index: 30;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Compteur style film amélioré */
+    .film-counter {
+      font-family: monospace;
+      font-size: 0.6rem;
+      color: #ff80b0;
+      background: rgba(0,0,0,0.6);
+      padding: 0.3rem 0.8rem;
+      border-radius: 2rem;
+      letter-spacing: 2px;
+      border: 1px solid #ff3366;
+      display: inline-block;
+    }
+
+    /* Typewriter amélioré */
+    .typewriter {
+      word-break: break-word;
+      white-space: pre-wrap;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #ffccdd;
+      text-shadow: 0 0 8px #ff99bb;
+    }
+
+    /* Animation de pulsation pour les éléments importants */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Éléments cinématographiques améliorés -->
+  <div class="film-grain"></div>
+  <div class="spotlight"></div>
+  <div class="vignette"></div>
+  <div class="scanline-cine"></div>
+  <div class="global-glitch"></div>
+  <div class="lightning"></div>
+  
+  <!-- Particules lumineuses -->
+  <div class="particles" id="particles"></div>
+
+  <div class="cine-container">
+
+    <!-- GÉNÉRIQUE D'OUVERTURE (SÉQUENCE INTRO) -->
+    <div id="openingSequence" class="cine-panel p-6 text-center space-y-4">
+      <div class="film-counter mb-2">[DOSSIER N° SV-2026]</div>
+      
+      <div class="space-y-2">
+        <p class="text-pink-300/70 text-xs tracking-[0.3em] animate-pulse">WONDERS À MEG</p>
+        <h1 class="cine-title text-3xl">OPÉRATION</h1>
+        <h1 class="cine-title text-4xl" style="color: #ff99bb;">SAINT-VALENTIN</h1>
+      </div>
+
+      <div class="border-t border-pink-700/50 my-4"></div>
+
+      <div id="openingText" class="typewriter text-pink-200/80 text-xs leading-relaxed cursor">
+      </div>
+
+      
+    <button onclick="startAuthentification()" id="startBtn" class="btn-cine mt-2">
+        [ ACCÉDER AU DOSSIER ]
+      </button>
+
+      <p class="text-[0.45rem] text-pink-400/30 mt-2">
+        ██████ CLASSIFIÉ ██████
+      </p>
+    </div>
+
+    <!-- ÉCRAN D'AUTHENTIFICATION -->
+    <div id="authScreen" class="hidden cine-panel p-6 space-y-4">
+      <div class="flex justify-between items-center">
+        <span class="subtitle">IDENTIFICATION</span>
+        <span class="film-counter">DS-SV-2026</span>
+      </div>
+
+      <div class="border-l-4 border-pink-600 pl-3 italic text-sm text-pink-200/80 my-4">
+        « Lors de quel événement le destin a‑t‑il choisi de croiser nos chemins pour la toute première fois… ce moment précis où tout a commencé ? »
+      </div>
+
+      <input type="text" id="answerInput" placeholder="taper la réponse..." 
+             class="input-cine">
+
+      <p id="authError" class="text-sm text-red-400 h-5 text-center"></p>
+
+      <button onclick="validateAnswer()" id="validateBtn" class="btn-cine">
+        VALIDER L'IDENTITÉ
+      </button>
+
+      <div class="text-[0.5rem] text-pink-400/30 text-center">
+        █ ÉCHEC = PROTOCOLE D'EFFACEMENT █
+      </div>
+    </div>
+
+    <!-- NOTIFICATION DE MESSAGE -->
+    <div id="notificationScreen" class="hidden cine-panel p-6 space-y-4 text-center">
+      <span class="subtitle">TRANSMISSION ENTRANTE</span>
+      
+      <div class="my-4">
+        <span class="text-6xl block animate-pulse">📨</span>
+      </div>
+      
+      <p class="text-pink-300 text-xl glow-pink">MESSAGE DÉTECTÉ</p>
+      <p class="text-xs text-pink-400/60">archives émotionnelles · niveau maximum</p>
+
+      <button onclick="readMessage()" id="readBtn" class="btn-cine mt-4">
+        LIRE LE MESSAGE
+      </button>
+    </div>
+
+    <!-- LECTURE DU MESSAGE -->
+    <div id="messageScreen" class="hidden cine-panel p-6 space-y-3">
+      <div class="flex justify-between items-center">
+        <span class="subtitle">DÉCRYPTAGE</span>
+        <span class="film-counter" id="messageStatus">encodage...</span>
+      </div>
+
+      <div id="messageContent" class="typewriter text-pink-100/90 min-h-[120px] p-4 bg-black/60 rounded-lg">
+      </div>
+
+      <button onclick="corruptMessage()" id="corruptBtn" class="btn-cine text-sm">
+        CORRIGER L'ERREUR
+      </button>
+    </div>
+
+    <!-- BRIEFING DE MISSION -->
+    <div id="briefingScreen" class="hidden cine-panel p-6 space-y-4">
+      <div class="flex justify-between items-center">
+        <span class="subtitle">BRIEFING MISSION</span>
+        <span class="film-counter">DOSSIER CENTRAL</span>
+      </div>
+      
+      <div id="briefingText" class="typewriter text-pink-100/90 text-sm min-h-[200px] p-4 bg-black/60 rounded-lg cine-cursor">
+      </div>
+
+      <button onclick="acceptMission()" id="acceptBtn" class="btn-cine">
+        ACCEPTER LA MISSION
+      </button>
+    </div>
+
+    <!-- MESSAGE DE BIENVENUE FINAL -->
+    <div id="welcomeScreen" class="hidden cine-panel p-6 space-y-4">
+      <div class="flex justify-between items-center">
+        <span class="subtitle">BIENVENUE, AGENT</span>
+        <span class="film-counter">MEGAN · NIVEAU 5</span>
+      </div>
+      
+      <div id="welcomeText" class="typewriter text-pink-100/90 text-sm min-h-[280px] p-4 bg-black/60 rounded-lg cine-cursor">
+      </div>
+
+      <a href="mission1.html" class="btn-cine text-center block no-underline">
+        LANCER LA MISSION 1
+      </a>
+      
+      <div class="text-[0.5rem] text-pink-400/30 text-center flex justify-center gap-4">
+        <span>⌛ FRAGMENTS: 0/7</span>
+        <span>🔐 NIVEAU MAX</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Création des particules lumineuses
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (5 + Math.random() * 10) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Texte d'ouverture cinématographique
+    const openingCinematic = `[SYSTÈME D'ARCHIVES ÉMOTIONNELLES]
+
+CLASSIFICATION : MAXIMUM
+EXPÉDITEUR : ████████
+DESTINATAIRE : AGENT CADET MEGAN
+
+Ce dossier contient des informations hautement sensibles liées à un message personnel de la plus haute importance.
+
+AVERTISSEMENT : Toute tentative d'accès non autorisé déclenchera un protocole d'effacement immédiat.
+
+Une seule personne possède les accès nécessaires.`;
+
+    // Texte du briefing
+    const briefingText = `Agent Cadet Megan,
+
+Une transmission confidentielle a été détectée dans les archives sécurisées. Son contenu est classé niveau maximum.
+
+Cependant… le message est verrouillé.
+Le protocole de protection a fragmenté son accès en plusieurs segments, désormais dispersés à travers différentes missions sécurisées.
+
+Pris isolément, ces fragments ne présentent aucune signification exploitable.
+Mais une fois localisés, récupérés et réassemblés dans leur ordre exact… ils permettront de restaurer l’accès au message original.
+
+Les analyses indiquent que ce message est destiné à une seule personne.
+Son déchiffrement nécessite une interprétation spécifique que les systèmes automatisés ne peuvent effectuer.
+
+Toutes les données suggèrent que tu es la candidate la plus compatible pour mener cette opération.
+
+Mission proposée :
+
+• Infiltrer les environnements sécurisés assignés  
+• Localiser et extraire chaque fragment  
+• Préserver leur intégrité  
+• Reconstituer la séquence complète  
+• Accéder au message final  
+
+Acceptes-tu de lancer l’opération ?`;
+
+    // Texte de bienvenue
+   const welcomeText = `
+
+DÉBRIEFING OPÉRATIONNEL — MISSION ACCEPTÉE
+
+Agent,
+
+Confirmation enregistrée.
+Tu as accepté la mission. Le protocole d’opération est maintenant actif.
+
+Un message hautement confidentiel t’est destiné.
+Son contenu est protégé par un système de verrouillage avancé de niveau maximal.
+
+La clé d’accès n’existe plus sous forme unique.
+Elle a été divisée en plusieurs fragments indépendants… puis dissimulée dans différentes zones sécurisées du système.
+
+Chaque mission correspond à une opération d’infiltration ciblée.
+Tu devras contourner des mécanismes de sécurité, pénétrer des environnements protégés, extraire des données verrouillées et récupérer les fragments dissimulés.
+
+Certaines zones seront protégées par des protocoles de défense actifs.
+D’autres nécessiteront analyse, décryptage ou manipulation de systèmes internes.
+
+Objectif principal :
+
+• Infiltrer chaque environnement sécurisé.
+• Localiser les fragments de la clé.
+• Les extraire sans compromettre leur intégrité.
+• Reconstituer la séquence correcte.
+
+Lorsque tous les fragments auront été récupérés et assemblés avec précision,
+la clé complète sera restaurée…
+
+…et l’accès au message qui t’est destiné sera autorisé.
+
+Directive opérationnelle :
+
+Aucun accès direct.
+Aucune récupération automatique.
+Chaque fragment doit être obtenu par intervention active.
+
+Les pare-feu sont en place.
+Les verrous sont actifs.
+Les fragments sont dissimulés.
+
+Tu es désormais en phase d’infiltration.
+
+Bonne chance, agent.
+
+`;
+
+    // ===== SÉQUENCE D'OUVERTURE =====
+    let i = 0;
+    const openingEl = document.getElementById('openingText');
+    
+    function typeOpening() {
+      if (i < openingCinematic.length) {
+        openingEl.innerHTML += openingCinematic.charAt(i);
+        i++;
+        setTimeout(typeOpening, 20);
+      }
+    }
+    
+    // Démarrer le typing au chargement
+    window.onload = function() {
+      typeOpening();
+      createParticles();
+    };
+
+    // ===== LANCER L'AUTHENTIFICATION =====
+    window.startAuthentification = function() {
+      document.getElementById('openingSequence').classList.add('hidden');
+      document.getElementById('authScreen').classList.remove('hidden');
+    };
+
+    // ===== AUTHENTIFICATION =====
+    window.validateAnswer = function() {
+      const answer = document.getElementById('answerInput').value.trim().toLowerCase();
+      const errorEl = document.getElementById('authError');
+      const validateBtn = document.getElementById('validateBtn');
+
+      // Mots-clés flexibles pour le souvenir
+      const keywords = ['événement', 'destin', 'chemins', 'première', 'fois'];
+      const containsKeywords = keywords.every(keyword => answer.includes(keyword));
+      
+      // Votre souvenir personnel (à modifier)
+      const yourMemory = answer.includes('match') && answer.includes('football') || 
+                        answer.includes('lycée') || 
+                        answer.includes('cantine') ||
+                        answer.includes('regard');
+
+      if (containsKeywords || yourMemory) {
+        errorEl.classList.add('text-green-400');
+        errorEl.textContent = '✔ ACCÈS AUTORISÉ';
+        validateBtn.disabled = true;
+        
+        setTimeout(() => {
+          document.getElementById('authScreen').classList.add('hidden');
+          document.getElementById('notificationScreen').classList.remove('hidden');
+        }, 1500);
+      } else {
+        errorEl.classList.add('text-red-400');
+        errorEl.textContent = '❌ ACCÈS REFUSÉ - SOUVENIR INCONNU';
+        
+        // Petit effet de glitch sur l'écran
+        document.querySelector('.cine-panel').classList.add('cine-glitch');
+        setTimeout(() => {
+          document.querySelector('.cine-panel').classList.remove('cine-glitch');
+        }, 500);
+      }
+    };
+
+    // ===== LIRE LE MESSAGE =====
+    window.readMessage = function() {
+      document.getElementById('notificationScreen').classList.add('hidden');
+      document.getElementById('messageScreen').classList.remove('hidden');
+      
+      const messageEl = document.getElementById('messageContent');
+      messageEl.innerHTML = '';
+      document.getElementById('messageStatus').textContent = 'décodage...';
+      
+      const intro = 'ma cherie que j\'aime tant je ten hjh%µ^ gj ¨¨¨¨ sjh ******\n tiiiit saissnd depuisisbduid erreur.............WX i bh';
+      let j = 0;
+      
+      function typeMessage() {
+        if (j < intro.length) {
+          messageEl.innerHTML += intro.charAt(j);
+          j++;
+          setTimeout(typeMessage, 60);
+        } else {
+          document.getElementById('corruptBtn').disabled = false;
+          document.getElementById('messageStatus').textContent = 'CORRUPTION DÉTECTÉE';
+        }
+      }
+      
+      typeMessage();
+    };
+
+    // ===== CORROMPRE LE MESSAGE =====
+    window.corruptMessage = function() {
+      const messageEl = document.getElementById('messageContent');
+      const corruptBtn = document.getElementById('corruptBtn');
+      
+      corruptBtn.disabled = true;
+      document.getElementById('messageStatus').textContent = 'ERREUR FATALE';
+      
+      // Effet glitch cinématographique
+      messageEl.classList.add('message-corrupted');
+      
+      const corrupted = `m̷a̷ ̷c̷h̷e̷r̷i̷e̷ ̷q̷u̷e̷ ̷j̷'̷a̷i̷m̷e̷ ̷t̷a̷n̷t̷
+t̷i̷i̷i̷t̷ ̷s̷a̷i̷s̷s̷n̷d̷ ̷d̷e̷\np̷u̷s̷i̷s̷b̷d̷u̷i̷d̷
+e̷r̷r̷e̷u̷r̷.̷.̷.̷.̷.̷.̷.̷W̷X̷X̷X̷X̷i̷b̷h̷
+MESSAGE CORROMPU - TRANSMISSION INTERROMPUE`;
+      
+      messageEl.innerHTML = corrupted;
+      
+      // Simulation de correction
+      setTimeout(() => {
+        messageEl.classList.remove('message-corrupted');
+        document.getElementById('messageStatus').textContent = 'ANALYSE...';
+        
+        setTimeout(() => {
+          document.getElementById('messageScreen').classList.add('hidden');
+          document.getElementById('briefingScreen').classList.remove('hidden');
+          
+          const briefingEl = document.getElementById('briefingText');
+          briefingEl.innerHTML = '';
+          
+          let k = 0;
+          function typeBriefing() {
+            if (k < briefingText.length) {
+              briefingEl.innerHTML += briefingText.charAt(k);
+              k++;
+              setTimeout(typeBriefing, 15);
+            }
+          }
+          typeBriefing();
+        }, 2000);
+      }, 2500);
+    };
+
+    // ===== ACCEPTER LA MISSION =====
+    window.acceptMission = function() {
+      document.getElementById('briefingScreen').classList.add('hidden');
+      document.getElementById('welcomeScreen').classList.remove('hidden');
+      
+      const welcomeEl = document.getElementById('welcomeText');
+      welcomeEl.innerHTML = '';
+      
+      let l = 0;
+      function typeWelcome() {
+        if (l < welcomeText.length) {
+          welcomeEl.innerHTML += welcomeText.charAt(l);
+          l++;
+          setTimeout(typeWelcome, 12);
+        }
+      }
+      typeWelcome();
+    };
+
+    // Validation avec touche Entrée
+    document.getElementById('answerInput')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        validateAnswer();
+      }
+    });
+
+  </script>
+</body>
+</html>

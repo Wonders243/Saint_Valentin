@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mission 7 · Fragment [07/07] · Opération Saint-Valentin</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 30% 30%, #1a0012, #0a0006);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', monospace;
+      padding: 0.5rem;
+      position: relative;
+    }
+
+    .film-grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 30%, #2a0015, #000000);
+      opacity: 0.9;
+      z-index: 0;
+    }
+
+    .film-grain::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.02) 0px,
+        rgba(255, 255, 255, 0.02) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      animation: filmFlicker 0.2s infinite;
+    }
+
+    @keyframes filmFlicker {
+      0% { opacity: 0.3; }
+      50% { opacity: 0.5; }
+      100% { opacity: 0.3; }
+    }
+
+    .vignette {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .scanline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent 50%, rgba(255, 40, 140, 0.03) 50%);
+      background-size: 100% 4px;
+      animation: scanMove 8s linear infinite;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    @keyframes scanMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(50%); }
+    }
+
+    .cine-panel {
+      background: rgba(8, 0, 4, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 50, 120, 0.4);
+      border-radius: 2rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 0 2px rgba(255, 20, 100, 0.3) inset;
+      position: relative;
+      z-index: 30;
+    }
+
+    .subtitle {
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      color: #ff99bb;
+      text-transform: uppercase;
+      border-bottom: 1px solid #ff3366;
+      display: inline-block;
+      padding-bottom: 0.3rem;
+    }
+
+    .btn-cine {
+      background: transparent;
+      border: 2px solid #ff3366;
+      color: #ffb0c8;
+      border-radius: 3rem;
+      padding: 0.8rem 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 0.8rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-cine:hover {
+      background: #ff2a8b;
+      color: black;
+      border-color: #ffccf0;
+      box-shadow: 0 0 30px #ff3b9b;
+      transform: scale(1.02);
+    }
+
+    .btn-cine:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .input-cine {
+      background: rgba(0, 0, 0, 0.7);
+      border: 2px solid #ff3366;
+      color: #ffc0e0;
+      border-radius: 3rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      outline: none;
+      width: 100%;
+      font-family: 'Courier New', monospace;
+    }
+
+    .input-cine:focus {
+      border-color: #ff80bf;
+      box-shadow: 0 0 30px #ff4d9e;
+    }
+
+    /* PUZZLE DE FRAGMENTS */
+    .puzzle-container {
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid #ff3366;
+      border-radius: 1.5rem;
+      padding: 1rem;
+    }
+
+    .puzzle-title {
+      text-align: center;
+      color: #ff99bb;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .pieces-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .piece-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      background: rgba(255, 51, 102, 0.1);
+      border-radius: 1rem;
+      padding: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .piece-row:hover {
+      background: rgba(255, 51, 102, 0.2);
+      border-color: #ff99bb;
+      transform: translateX(5px);
+    }
+
+    .piece-row.selected {
+      background: #ff3366;
+      border-color: white;
+    }
+
+    .piece-row.selected .piece-text {
+      color: white;
+    }
+
+    .piece-number {
+      width: 30px;
+      height: 30px;
+      background: #ff99bb;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1a0012;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+
+    .piece-text {
+      flex: 1;
+      color: #ffccdd;
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    /* ZONE DE CONSTRUCTION */
+    .construction-area {
+      background: rgba(255, 51, 102, 0.15);
+      border: 2px dashed #ff99bb;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+    .slot-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .slot {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 1rem;
+      padding: 0.5rem;
+      min-height: 3rem;
+      border: 2px solid #ff3366;
+    }
+
+    .slot.filled {
+      border-color: #aaffaa;
+      background: rgba(170, 255, 170, 0.1);
+    }
+
+    .slot-number {
+      width: 30px;
+      height: 30px;
+      background: #ff3366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    .slot-content {
+      flex: 1;
+      color: #ffccdd;
+      font-size: 0.8rem;
+    }
+
+    .slot.empty .slot-content {
+      color: #666;
+      font-style: italic;
+    }
+
+    /* ACTIONS */
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+
+    .action-btn {
+      flex: 1;
+      background: rgba(255, 51, 102, 0.2);
+      border: 2px solid #ff99bb;
+      border-radius: 2rem;
+      padding: 0.5rem;
+      color: #ffccdd;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .action-btn:hover {
+      background: #ff3366;
+      color: white;
+      border-color: white;
+    }
+
+    .action-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* PROGRESSION */
+    .progress-bar {
+      height: 8px;
+      background: #330033;
+      border-radius: 4px;
+      margin: 1rem 0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff99bb, #ff3366);
+      transition: width 0.3s;
+    }
+
+    /* MESSAGE RÉVÉLÉ */
+    .revealed-message {
+      background: rgba(0,0,0,0.5);
+      border: 2px solid #ff3366;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      margin: 1rem 0;
+      text-align: center;
+      color: #ffccdd;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 450px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      z-index: 30;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .glitch-effect {
+      animation: glitch 0.1s infinite;
+    }
+
+    .glow-pink {
+      text-shadow: 0 0 8px #ff4da6, 0 0 18px #ff1a75;
+    }
+
+    .fragment-indicator {
+      font-size: 0.6rem;
+      color: #ff99bb;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+    <!-- IFRAME MUSIQUE GLOBALE - À AJOUTER SUR CHAQUE PAGE -->
+<iframe src="player.html" style="position: absolute; width: 0; height: 0; border: 0;"></iframe>
+
+  <!-- Éléments d'ambiance -->
+  <div class="film-grain"></div>
+  <div class="vignette"></div>
+  <div class="scanline"></div>
+
+  <div class="container">
+
+    <!-- EN-TÊTE MISSION -->
+    <div class="cine-panel py-3 px-4 text-center">
+      <h1 class="text-xl glow-pink text-pink-200 tracking-widest">
+        ⚡ MISSION 7 · [07/07]
+      </h1>
+      <div class="flex justify-center gap-2 text-[0.55rem] text-pink-400/60">
+        <span>FRAGMENT FINAL</span>
+        <span>●</span>
+        <span>LE DERNIER SOUVENIR</span>
+      </div>
+      <div class="progress-bar mt-2"></div>
+    </div>
+
+    <!-- INTRODUCTION MISSION -->
+    <div id="introMission" class="cine-panel p-5 space-y-4">
+      <div class="flex justify-between items-center">
+        <span class="subtitle">FRAGMENT 7</span>
+        <span class="text-[0.55rem] text-pink-400/50">SOUVENIR N°7</span>
+      </div>
+
+      <div class="text-pink-100/90 text-sm min-h-[60px] p-2 bg-black/30 rounded-lg" id="introText">
+      </div>
+
+      <button onclick="startMission()" id="startBtn" class="btn-cine">
+        RECONSTRUIRE
+      </button>
+    </div>
+
+    <!-- ÉCRAN PRINCIPAL DE LA MISSION -->
+    <div id="missionScreen" class="hidden cine-panel p-5 space-y-4">
+
+      <!-- Indicateur -->
+      <div class="fragment-indicator">
+        🧩 6/6 fragments placés pour révéler le dernier
+      </div>
+
+      <!-- ZONE DE CONSTRUCTION -->
+      <div class="construction-area">
+        <div class="puzzle-title">📋 MESSAGE EN CONSTRUCTION</div>
+        <div class="slot-container" id="slotsContainer">
+          <!-- Généré en JS -->
+        </div>
+      </div>
+
+      <!-- FRAGMENTS DISPONIBLES -->
+      <div class="puzzle-container">
+        <div class="puzzle-title">🧩 FRAGMENTS DES MISSIONS PRÉCÉDENTES</div>
+        <div class="pieces-grid" id="piecesGrid">
+          <!-- Généré en JS -->
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="actions">
+        <div class="action-btn" onclick="resetPuzzle()">⟲ TOUT RECOMMENCER</div>
+      </div>
+
+      <!-- BARRE DE PROGRESSION -->
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+
+      <!-- MESSAGE RÉVÉLÉ (apparaît quand tout est placé) -->
+      <div id="revealedContainer" class="hidden">
+        <div class="revealed-message" id="revealedMessage"></div>
+
+        <!-- Zone de réponse -->
+        <div class="space-y-2 mt-4">
+          <input type="text" id="decodeInput" placeholder="taper le message révélé..." class="input-cine text-sm">
+          <button onclick="checkDecode()" id="checkBtn" class="btn-cine">VALIDER</button>
+        </div>
+      </div>
+
+      <p id="decodeError" class="text-sm h-5 text-center"></p>
+    </div>
+
+    <!-- ÉCRAN DE SUCCÈS -->
+    <div id="successScreen" class="hidden cine-panel p-6 space-y-4 text-center">
+      <span class="text-5xl mb-2 block">💝</span>
+      <h2 class="text-2xl glow-pink text-pink-200">FRAGMENT FINAL RÉCUPÉRÉ</h2>
+      
+      <div class="bg-pink-900/30 p-4 rounded-xl">
+        <p class="text-pink-100 text-sm mb-2">Dernier fragment :</p>
+        <p class="text-xl font-bold text-pink-200 glow-pink">"Je sais que je n'ai pas encore la stabilité que tu mérites"</p>
+      </div>
+
+      <div class="flex flex-col gap-1 text-xs text-pink-100/70">
+        <p>✓ Fragment 1: "Mon amour"</p>
+        <p>✓ Fragment 2: "Quand j'aurai enfin trouvé cet équilibre"</p>
+        <p>✓ Fragment 3: "Je t'aime"</p>
+        <p>✓ Fragment 4: "même quand je ne le dis pas"</p>
+        <p>✓ Fragment 5: "je pourrai t'offrir bien plus que ce petit escape game"</p>
+        <p>✓ Fragment 6: "mais je vois tous tes efforts"</p>
+        <p>✓ Fragment 7: "Je sais que je n'ai pas encore la stabilité que tu mérites"</p>
+      </div>
+
+      <a href="code-final.html" class="btn-cine text-center block no-underline mt-4">
+        ACCÉDER AU CODE FINAL →
+      </a>
+
+      <div class="text-[0.55rem] text-pink-400/40">
+        FRAGMENTS: 7/7 · MISSION ACCOMPLIE
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Les fragments des missions précédentes
+    const fragments = [
+      { id: 1, texte: "Mon amour", mission: "Mission 1" },
+      { id: 2, texte: "QuAnd j'Aurai enfin trouvé ceEt équilibrE", mission: "Mission 2" },
+      { id: 3, texte: "JE T'AIME", mission: "Mission 3" },
+      { id: 4, texte: "MêMe quand je nE lE dis pas", mission: "Mission 4" },
+      { id: 5, texte: "jE pouRRai t'oFFrir bien plus que ce petit escApe game", mission: "Mission 5" },
+      { id: 6, texte: "MAis je vois tous tEs efforts", mission: "Mission 6" }
+    ];
+
+    // Ordre correct pour former le message
+    const ordreCorrect = [1, 6, 4,2, 5, 3]; // L'ordre qui mène au dernier fragment
+
+    let fragmentsRestants = [...fragments];
+    let fragmentsPlaces = [];
+    let slotContents = new Array(6).fill(null);
+    let selectedIndex = -1;
+
+    const introMissionText = 
+    `Dernier fragment localisé. 
+Mais il est protégé par un verrou temporel.
+Place les 6 fragments des missions précédentes dans le bon ordre pour le révéler en sachant que le 7 eme fragment a aussi sa place dans le text.
+
+L'ordre que tu choisis doit former un message cohérent.
+Le dernier fragment apparaîtra quand tu auras réussi.`;
+
+    let i = 0;
+    const introEl = document.getElementById('introText');
+    
+    function typeIntro() {
+      if (i < introMissionText.length) {
+        introEl.innerHTML += introMissionText.charAt(i);
+        i++;
+        setTimeout(typeIntro, 20);
+      }
+    }
+    typeIntro();
+
+    window.startMission = function() {
+      document.getElementById('introMission').classList.add('hidden');
+      document.getElementById('missionScreen').classList.remove('hidden');
+      resetPuzzle();
+    };
+
+    // Initialiser l'affichage
+    function updateDisplay() {
+      // Afficher les fragments disponibles
+      const piecesGrid = document.getElementById('piecesGrid');
+      piecesGrid.innerHTML = '';
+
+      fragmentsRestants.forEach((fragment, index) => {
+        const pieceRow = document.createElement('div');
+        pieceRow.className = `piece-row ${index === selectedIndex ? 'selected' : ''}`;
+        pieceRow.onclick = () => selectFragment(index);
+        
+        pieceRow.innerHTML = `
+          <div class="piece-number">${fragment.id}</div>
+          <div class="piece-text">${fragment.texte}</div>
+        `;
+        
+        piecesGrid.appendChild(pieceRow);
+      });
+
+      // Afficher les slots
+      const slotsContainer = document.getElementById('slotsContainer');
+      slotsContainer.innerHTML = '';
+
+      for (let i = 0; i < 6; i++) {
+        const slot = document.createElement('div');
+        slot.className = `slot ${slotContents[i] ? 'filled' : 'empty'}`;
+        slot.onclick = () => placeInSlot(i);
+        
+        const slotNumber = document.createElement('div');
+        slotNumber.className = 'slot-number';
+        slotNumber.textContent = i + 1;
+        
+        const slotContent = document.createElement('div');
+        slotContent.className = 'slot-content';
+        
+        if (slotContents[i]) {
+          const fragment = fragments.find(f => f.id === slotContents[i]);
+          slotContent.textContent = fragment ? fragment.texte : '';
+        } else {
+          slotContent.textContent = '❓ Emplacement vide';
+        }
+        
+        slot.appendChild(slotNumber);
+        slot.appendChild(slotContent);
+        slotsContainer.appendChild(slot);
+      }
+
+      // Mettre à jour la progression
+      const placedCount = fragmentsPlaces.length;
+      const progress = (placedCount / 6) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+
+      // Vérifier si tous les fragments sont placés
+      if (placedCount === 6) {
+        checkOrder();
+      }
+    }
+
+    // Sélectionner un fragment
+    window.selectFragment = function(index) {
+      selectedIndex = index;
+      updateDisplay();
+    };
+
+    // Placer dans un slot
+    window.placeInSlot = function(slotIndex) {
+      if (selectedIndex === -1) {
+        alert("Sélectionne d'abord un fragment !");
+        return;
+      }
+
+      if (slotContents[slotIndex] !== null) {
+        alert("Cet emplacement est déjà occupé !");
+        return;
+      }
+
+      const fragment = fragmentsRestants[selectedIndex];
+      slotContents[slotIndex] = fragment.id;
+      fragmentsPlaces.push({ id: fragment.id, slot: slotIndex });
+      fragmentsRestants.splice(selectedIndex, 1);
+      selectedIndex = -1;
+
+      updateDisplay();
+    };
+
+    // Réinitialiser le puzzle
+    window.resetPuzzle = function() {
+      fragmentsRestants = [...fragments];
+      fragmentsPlaces = [];
+      slotContents = new Array(6).fill(null);
+      selectedIndex = -1;
+      document.getElementById('revealedContainer').classList.add('hidden');
+      document.getElementById('decodeError').textContent = '';
+      updateDisplay();
+    };
+
+    // Placement automatique (solution)
+    window.autoPlace = function() {
+      resetPuzzle();
+      
+      // Placer dans l'ordre correct
+      ordreCorrect.forEach((fragmentId, index) => {
+        const fragmentIndex = fragmentsRestants.findIndex(f => f.id === fragmentId);
+        if (fragmentIndex !== -1) {
+          const fragment = fragmentsRestants[fragmentIndex];
+          slotContents[index] = fragment.id;
+          fragmentsPlaces.push({ id: fragment.id, slot: index });
+          fragmentsRestants.splice(fragmentIndex, 1);
+        }
+      });
+      
+      selectedIndex = -1;
+      updateDisplay();
+    };
+
+    // Vérifier l'ordre
+    function checkOrder() {
+      let correct = true;
+      for (let i = 0; i < 6; i++) {
+        if (slotContents[i] !== ordreCorrect[i]) {
+          correct = false;
+          break;
+        }
+      }
+
+      if (correct) {
+        // Révéler le dernier fragment
+        document.getElementById('revealedContainer').classList.remove('hidden');
+        document.getElementById('revealedMessage').innerHTML = 
+          "✨ FRAGMENT FINAL RÉVÉLÉ ✨<br><br>" +
+          "<strong>\"Je sais que je n'ai pas encore la stabilité que tu mérites\"</strong>";
+        
+        // Désactiver les interactions
+        document.querySelectorAll('.piece-row').forEach(el => {
+          el.style.pointerEvents = 'none';
+          el.style.opacity = '0.5';
+        });
+        
+        // Cacher le bouton auto
+        document.getElementById('autoBtn').style.display = 'none';
+      }
+    }
+
+    // Valider la réponse
+    window.checkDecode = function() {
+      const userAnswer = document.getElementById('decodeInput').value.trim();
+      const errorEl = document.getElementById('decodeError');
+      
+      let cleanAnswer = userAnswer.replace(/\s+/g, ' ').trim();
+      cleanAnswer = cleanAnswer.replace(/[''’`]/g, "'");
+      cleanAnswer = cleanAnswer.toLowerCase();
+      
+      const target = "je sais que je n'ai pas encore la stabilité que tu mérites";
+      
+      if (cleanAnswer === target || 
+          cleanAnswer.includes("je sais que je n'ai pas encore la stabilité")) {
+        
+        errorEl.classList.add('text-green-400');
+        errorEl.textContent = '✔ FRAGMENT RÉCUPÉRÉ !';
+        
+        document.getElementById('checkBtn').disabled = true;
+        
+        setTimeout(() => {
+          document.getElementById('missionScreen').classList.add('hidden');
+          document.getElementById('successScreen').classList.remove('hidden');
+        }, 1500);
+      } else {
+        errorEl.classList.add('text-red-400');
+        errorEl.textContent = userAnswer === '' ? '❓' : '❌';
+        
+        document.querySelector('.construction-area')?.classList.add('glitch-effect');
+        setTimeout(() => {
+          document.querySelector('.construction-area')?.classList.remove('glitch-effect');
+        }, 300);
+      }
+    };
+
+    // Validation avec Entrée
+    document.getElementById('decodeInput')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        checkDecode();
+      }
+    });
+
+  </script>
+
+</body>
+</html> 

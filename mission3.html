@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mission 3 · Fragment [03/07] · Opération Saint-Valentin</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 30% 30%, #1a0012, #0a0006);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', monospace;
+      padding: 0.5rem;
+      position: relative;
+    }
+
+    .film-grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 30%, #2a0015, #000000);
+      opacity: 0.9;
+      z-index: 0;
+    }
+
+    .film-grain::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.02) 0px,
+        rgba(255, 255, 255, 0.02) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      animation: filmFlicker 0.2s infinite;
+    }
+
+    @keyframes filmFlicker {
+      0% { opacity: 0.3; }
+      50% { opacity: 0.5; }
+      100% { opacity: 0.3; }
+    }
+
+    .vignette {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .scanline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent 50%, rgba(255, 40, 140, 0.03) 50%);
+      background-size: 100% 4px;
+      animation: scanMove 8s linear infinite;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    @keyframes scanMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(50%); }
+    }
+
+    .cine-panel {
+      background: rgba(8, 0, 4, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 50, 120, 0.4);
+      border-radius: 2rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 0 2px rgba(255, 20, 100, 0.3) inset;
+      position: relative;
+      z-index: 30;
+    }
+
+    .subtitle {
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      color: #ff99bb;
+      text-transform: uppercase;
+      border-bottom: 1px solid #ff3366;
+      display: inline-block;
+      padding-bottom: 0.3rem;
+    }
+
+    .btn-cine {
+      background: transparent;
+      border: 2px solid #ff3366;
+      color: #ffb0c8;
+      border-radius: 3rem;
+      padding: 0.8rem 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 0.8rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-cine:hover {
+      background: #ff2a8b;
+      color: black;
+      border-color: #ffccf0;
+      box-shadow: 0 0 30px #ff3b9b;
+      transform: scale(1.02);
+    }
+
+    .btn-cine:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .input-cine {
+      background: rgba(0, 0, 0, 0.7);
+      border: 2px solid #ff3366;
+      color: #ffc0e0;
+      border-radius: 3rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      outline: none;
+      width: 100%;
+      font-family: 'Courier New', monospace;
+    }
+
+    .input-cine:focus {
+      border-color: #ff80bf;
+      box-shadow: 0 0 30px #ff4d9e;
+    }
+
+    .encrypted-box {
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid #ff3366;
+      border-radius: 1.5rem;
+      padding: 1.2rem 0.8rem;
+      font-size: 1.2rem;
+      text-align: center;
+      color: #ff99bb;
+      text-shadow: 0 0 10px #ff1a75;
+      word-break: break-word;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      line-height: 1.8;
+    }
+
+    .hearts-compact {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.8rem 1.2rem;
+    }
+
+    .heart-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255, 51, 102, 0.05);
+      border-radius: 0.8rem;
+      padding: 0.3rem 0.2rem;
+    }
+
+    .heart-row {
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 450px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      z-index: 30;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .hint-minimal {
+      background: rgba(255, 51, 102, 0.08);
+      border-radius: 0.8rem;
+      padding: 0.5rem;
+      font-size: 0.6rem;
+      color: #ff99bb;
+      text-align: center;
+      border: 1px dotted #ff3366;
+    }
+
+    .glitch-effect {
+      animation: glitch 0.1s infinite;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-1px, 1px); }
+      40% { transform: translate(1px, -1px); }
+      60% { transform: translate(-1px, -1px); }
+      80% { transform: translate(1px, 1px); }
+      100% { transform: translate(0); }
+    }
+
+    .glow-pink {
+      text-shadow: 0 0 8px #ff4da6, 0 0 18px #ff1a75;
+    }
+
+    .progress-bar {
+      width: 60%;
+      height: 4px;
+      background: #ff3366;
+      border-radius: 2px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- IFRAME MUSIQUE GLOBALE - À AJOUTER SUR CHAQUE PAGE --><!-- IFRAME MUSIQUE GLOBALE - À AJOUTER SUR CHAQUE PAGE -->
+<iframe src="player.html" style="position: absolute; width: 0; height: 0; border: 0;"></iframe>
+  <!-- Éléments d'ambiance -->
+  <div class="film-grain"></div>
+  <div class="vignette"></div>
+  <div class="scanline"></div>
+
+  <div class="container">
+
+    <!-- EN-TÊTE MISSION -->
+    <div class="cine-panel py-3 px-4 text-center">
+      <h1 class="text-xl glow-pink text-pink-200 tracking-widest">
+        ⚡ MISSION 3 · [03/07]
+      </h1>
+      <div class="flex justify-center gap-2 text-[0.55rem] text-pink-400/60">
+        <span>CODE CŒUR</span>
+        <span>●</span>
+        <span>ALPHABET SECRET</span>
+      </div>
+      <div class="progress-bar mt-2"></div>
+    </div>
+
+    <!-- INTRODUCTION MISSION -->
+    <div id="introMission" class="cine-panel p-5 space-y-4">
+      <div class="flex justify-between items-center">
+        <span class="subtitle">FRAGMENT 3</span>
+        <span class="text-[0.55rem] text-pink-400/50">SOUVENIR N°3</span>
+      </div>
+
+      <div class="text-pink-100/90 text-sm min-h-[60px] p-2 bg-black/30 rounded-lg" id="introText">
+      </div>
+
+      <button onclick="startMission()" id="startBtn" class="btn-cine">
+        DÉCRYPTER
+      </button>
+    </div>
+
+    <!-- ÉCRAN PRINCIPAL DE LA MISSION -->
+    <div id="missionScreen" class="hidden cine-panel p-5 space-y-4">
+
+      <!-- Message crypté compact -->
+      <div class="space-y-2">
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-pink-300">MESSAGE CODÉ</span>
+          <span class="text-[0.5rem] bg-pink-900/50 px-2 py-1 rounded-full">❤️ secret</span>
+        </div>
+        
+        <div class="encrypted-box">
+          <div class="hearts-compact">
+            <span class="heart-row">🧡🧡🧡🧡🧡🧡🧡🧡🧡🧡</span>
+            <span class="heart-row">💜💜💜💜💜</span>
+            <span class="heart-row">💕</span>
+            <span class="heart-row">💛💛💛💛💛💛💛💛💛💛💛💛💛💛💛💛💛💛💛💛</span>
+            <span class="heart-row">💕</span>
+            <span class="heart-row">🧡</span>
+            <span class="heart-row">❤️❤️❤️❤️❤️❤️❤️❤️❤️</span>
+            <span class="heart-row">💙💙💙💙💙💙💙💙💙💙💙💙💙</span>
+            <span class="heart-row">💜💜💜💜💜</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Indice minimal -->
+      <div class="hint-minimal">
+        <p>❤️ = 9 · 🧡 = 1 ou 10 · 💛 = 2 ou 11 ou 20 · 💜 = 5 ou 14</p>
+        <p class="mt-1">💕 = séparateur</p>
+      </div>
+
+      <!-- Zone de réponse -->
+      <div class="space-y-2">
+        <input type="text" id="decodeInput" placeholder="taper le message..." 
+               class="input-cine text-sm">
+      </div>
+
+      <button onclick="checkDecode()" id="checkBtn" class="btn-cine">
+        VALIDER
+      </button>
+
+      <p id="decodeError" class="text-sm h-5 text-center"></p>
+    </div>
+
+    <!-- ÉCRAN DE SUCCÈS -->
+    <div id="successScreen" class="hidden cine-panel p-6 space-y-4 text-center">
+      <span class="text-5xl mb-2 block">❤️</span>
+      <h2 class="text-2xl glow-pink text-pink-200">FRAGMENT RÉCUPÉRÉ</h2>
+      
+      <div class="bg-pink-900/30 p-4 rounded-xl">
+        <p class="text-pink-100 text-sm mb-2">Message :</p>
+        <p class="text-3xl font-bold text-pink-200 glow-pink">"Je t'aime"</p>
+      </div>
+
+      <div class="flex justify-center gap-4 text-xs text-pink-100/70">
+        <p>✓ Fragment 1: "Mon amour"</p>
+        <p>✓ Fragment 2: "QuanD J’auRai enfin Trouvé cet équilibre"</p>
+        <p>✓ Fragment 3: "JE T'AIME"</p>
+      </div>
+
+      <a href="mission4.html" class="btn-cine text-center block no-underline mt-4">
+        SUIVANT →
+      </a>
+
+      <div class="text-[0.55rem] text-pink-400/40">
+        FRAGMENTS: 3/7
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const introMissionText = `Fragment localisé.
+Alphabet codé par cœurs.
+Trouve le message.`;
+
+    let i = 0;
+    const introEl = document.getElementById('introText');
+    
+    function typeIntro() {
+      if (i < introMissionText.length) {
+        introEl.innerHTML += introMissionText.charAt(i);
+        i++;
+        setTimeout(typeIntro, 30);
+      }
+    }
+    typeIntro();
+
+    window.startMission = function() {
+      document.getElementById('introMission').classList.add('hidden');
+      document.getElementById('missionScreen').classList.remove('hidden');
+    };
+
+    window.checkDecode = function() {
+      const userAnswer = document.getElementById('decodeInput').value.trim();
+      const errorEl = document.getElementById('decodeError');
+      
+      let cleanAnswer = userAnswer.replace(/\s+/g, ' ').trim();
+      cleanAnswer = cleanAnswer.replace(/[''’`]/g, "'");
+      cleanAnswer = cleanAnswer.toLowerCase();
+      
+      const isCorrect = cleanAnswer === "je t'aime" || 
+                        cleanAnswer === "je t’aime" ||
+                        cleanAnswer === "je taime";
+
+      if (isCorrect) {
+        errorEl.classList.add('text-green-400');
+        errorEl.textContent = '✔ DÉCODÉ';
+        
+        document.getElementById('checkBtn').disabled = true;
+        
+        setTimeout(() => {
+          document.getElementById('missionScreen').classList.add('hidden');
+          document.getElementById('successScreen').classList.remove('hidden');
+        }, 1500);
+      } else {
+        errorEl.classList.add('text-red-400');
+        errorEl.textContent = userAnswer === '' ? '❓' : '❌';
+        
+        document.querySelector('.encrypted-box')?.classList.add('glitch-effect');
+        setTimeout(() => {
+          document.querySelector('.encrypted-box')?.classList.remove('glitch-effect');
+        }, 300);
+      }
+    };
+
+    document.getElementById('decodeInput')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        checkDecode();
+      }
+    });
+
+  </script>
+
+</body>
+</html>

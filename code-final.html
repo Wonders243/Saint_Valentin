@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CLASSIFICATION MAXIMUM · OPÉRATION SAINT-VALENTIN</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* ========== STYLE CINÉMATOGRAPHIQUE ULTRA ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000000;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', monospace;
+      padding: 0.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ===== EFFETS SPECTACULAIRES ===== */
+    
+    /* Grain de film analogique */
+    .film-grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-radial-gradient(circle at 20% 30%, rgba(255,255,255,0.02) 0px, transparent 1px);
+      background-size: 4px 4px;
+      pointer-events: none;
+      z-index: 5;
+      animation: grainFlicker 0.2s infinite;
+    }
+
+    @keyframes grainFlicker {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Vignettage cinéma */
+    .vignette-cine {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0 0 200px rgba(0,0,0,0.9), inset 0 0 100px #ff336640;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* Scanlines dynamiques */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(255, 51, 102, 0.03) 2px,
+        rgba(255, 51, 102, 0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 15;
+      animation: scanMove 10s linear infinite;
+    }
+
+    @keyframes scanMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(50%); }
+    }
+
+    /* Glitch global */
+    .global-glitch {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      pointer-events: none;
+      z-index: 20;
+      mix-blend-mode: overlay;
+      animation: globalGlitch 8s infinite;
+    }
+
+    @keyframes globalGlitch {
+      0%, 100% { opacity: 0; }
+      5% { opacity: 0.1; background: rgba(255,0,100,0.1); transform: translate(2px, 0); }
+      6% { opacity: 0.1; background: rgba(0,255,255,0.1); transform: translate(-2px, 0); }
+      7% { opacity: 0; }
+    }
+
+    /* Éclairs */
+    .lightning {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 50;
+      animation: lightningFlash 12s infinite;
+    }
+
+    @keyframes lightningFlash {
+      0%, 95%, 100% { opacity: 0; }
+      96% { opacity: 0.8; }
+      97% { opacity: 0.3; }
+      98% { opacity: 0.6; }
+      99% { opacity: 0.1; }
+    }
+
+    /* ===== CONTENEUR PRINCIPAL ===== */
+    .cine-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      z-index: 100;
+    }
+
+    /* ===== CADRE PRINCIPAL ===== */
+    .master-panel {
+      background: rgba(5, 0, 10, 0.85);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 51, 102, 0.6);
+      border-radius: 3rem;
+      box-shadow: 0 0 80px #ff3366, 0 0 0 2px rgba(255, 51, 102, 0.3) inset, 0 30px 60px rgba(0,0,0,0.9);
+      position: relative;
+      overflow: hidden;
+      animation: panelPulse 4s infinite;
+    }
+
+    @keyframes panelPulse {
+      0%, 100% { box-shadow: 0 0 80px #ff3366; }
+      50% { box-shadow: 0 0 120px #ff6699, 0 0 200px #ff3366; }
+    }
+
+    .master-panel::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 50% 50%, rgba(255,51,102,0.1), transparent 70%);
+      animation: rotate 20s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .panel-content {
+      position: relative;
+      z-index: 10;
+      padding: 1.5rem;
+    }
+
+    /* ===== TITRE PRINCIPAL ===== */
+    .main-title {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .main-title h1 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      color: #ff99bb;
+      text-shadow: 0 0 20px #ff3366, 0 0 40px #ff3366, 4px 4px 0 #330033;
+      animation: titleFlicker 3s infinite;
+    }
+
+    @keyframes titleFlicker {
+      0%, 100% { opacity: 1; text-shadow: 0 0 20px #ff3366, 0 0 40px #ff3366; }
+      92% { opacity: 1; }
+      93% { opacity: 0.3; }
+      94% { opacity: 1; }
+      95% { opacity: 0.5; }
+      96% { opacity: 1; }
+    }
+
+    .title-line {
+      height: 2px;
+      width: 100px;
+      margin: 0.5rem auto;
+      background: linear-gradient(90deg, transparent, #ff3366, #ff99bb, #ff3366, transparent);
+      animation: linePulse 2s infinite;
+    }
+
+    @keyframes linePulse {
+      0%, 100% { opacity: 0.5; width: 100px; }
+      50% { opacity: 1; width: 150px; }
+    }
+
+    /* ===== CADRE DE BRIEFING ===== */
+    .briefing-frame {
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid #ff3366;
+      border-radius: 2rem;
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 0 30px #ff3366, inset 0 0 20px #330033;
+    }
+
+    .briefing-frame::after {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #ff3366, #ff99bb, #ff3366);
+      border-radius: 2rem;
+      z-index: -1;
+      opacity: 0.5;
+      animation: borderGlow 3s infinite;
+    }
+
+    @keyframes borderGlow {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .briefing-title {
+      font-size: 1rem;
+      color: #ff99bb;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 1rem;
+      text-align: center;
+      text-shadow: 0 0 10px #ff3366;
+    }
+
+    .briefing-text {
+      color: #ffccdd;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      text-shadow: 0 0 5px #ff3366;
+    }
+
+    .highlight-cine {
+      color: #ff99bb;
+      font-weight: bold;
+      text-shadow: 0 0 20px #ff3366, 0 0 40px #ff3366;
+      animation: highlightPulse 2s infinite;
+    }
+
+    @keyframes highlightPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; text-shadow: 0 0 40px #ff99bb; }
+    }
+
+    /* ===== LISTE DES FRAGMENTS (STYLE DOSSIER CLASSIFIÉ) ===== */
+    .dossier-classifie {
+      background: rgba(10, 0, 20, 0.8);
+      border: 2px solid #ff99bb;
+      border-radius: 2rem;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      position: relative;
+      backdrop-filter: blur(5px);
+    }
+
+    .dossier-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #ff3366;
+    }
+
+    .dossier-header span {
+      color: #ff99bb;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+    }
+
+    .dossier-header .classe {
+      background: #ff3366;
+      color: black;
+      padding: 0.2rem 0.8rem;
+      border-radius: 2rem;
+      font-weight: bold;
+      font-size: 0.6rem;
+    }
+
+    .fragment-line {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.7rem;
+      border-bottom: 1px solid rgba(255, 51, 102, 0.3);
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .fragment-line:hover {
+      background: rgba(255, 51, 102, 0.2);
+      transform: translateX(5px);
+      box-shadow: -5px 0 0 #ff3366;
+    }
+
+    .fragment-line:last-child {
+      border-bottom: none;
+    }
+
+    .mission-tag {
+      width: 70px;
+      font-size: 0.6rem;
+      color: #ff99bb;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .fragment-texte-cine {
+      flex: 1;
+      color: #ffccdd;
+      font-size: 0.7rem;
+      line-height: 1.4;
+    }
+
+    .code-mystere {
+      width: 35px;
+      height: 35px;
+      background: rgba(255, 51, 102, 0.2);
+      border: 2px solid #ff99bb;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ff99bb;
+      font-weight: bold;
+      font-size: 1rem;
+      box-shadow: 0 0 20px #ff3366;
+      animation: codePulse 2s infinite;
+    }
+
+    @keyframes codePulse {
+      0%, 100% { box-shadow: 0 0 20px #ff3366; }
+      50% { box-shadow: 0 0 40px #ff99bb; }
+    }
+
+    /* ===== COFFRE-FORT CINÉMATIQUE ===== */
+    .vault-cine {
+      background: #2a1a2a;
+      background-image: repeating-linear-gradient(45deg, #3a2a3a 0px, #3a2a3a 10px, #2a1a2a 10px, #2a1a2a 20px);
+      border: 6px solid #ff99bb;
+      border-radius: 3rem;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 20px 0 #1a0a1a, 0 0 100px #ff3366;
+      position: relative;
+      transform: perspective(500px) rotateX(2deg);
+    }
+
+    .vault-door {
+      background: #0a0a1a;
+      border: 4px solid #ff99bb;
+      border-radius: 2rem;
+      padding: 1.2rem;
+      box-shadow: inset 0 0 50px #000;
+    }
+
+    .vault-lock {
+      width: 80px;
+      height: 80px;
+      background: #c0a0c0;
+      border-radius: 50%;
+      margin: 0 auto 1rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      border: 4px solid #ffccdd;
+      box-shadow: 0 0 60px #ff99bb;
+      animation: lockPulse 2s infinite;
+    }
+
+    @keyframes lockPulse {
+      0%, 100% { box-shadow: 0 0 60px #ff99bb; }
+      50% { box-shadow: 0 0 100px #ff3366, 0 0 200px #ff3366; }
+    }
+
+    .screen-cine {
+      background: #0f0f1f;
+      border: 3px solid #ff99bb;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      color: #aaffaa;
+      font-size: 2.5rem;
+      letter-spacing: 10px;
+      text-shadow: 0 0 20px #aaffaa;
+      box-shadow: inset 0 0 30px #000, 0 0 30px #ff99bb;
+      margin-bottom: 1rem;
+    }
+
+    /* ===== CLAVIER CINÉMATIQUE ===== */
+    .keypad-cine {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+      margin: 1.5rem 0;
+    }
+
+    .key-cine {
+      background: rgba(255, 51, 102, 0.15);
+      border: 2px solid #ff99bb;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ffccdd;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 0 15px rgba(255, 51, 102, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .key-cine::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .key-cine:hover::before {
+      left: 100%;
+    }
+
+    .key-cine:hover {
+      background: #ff3366;
+      color: white;
+      transform: scale(1.1);
+      box-shadow: 0 0 40px #ff99bb;
+      border-color: white;
+    }
+
+    .key-cine:active {
+      transform: scale(0.95);
+    }
+
+    .key-delete {
+      background: rgba(255, 100, 100, 0.2);
+      border-color: #ff6666;
+      color: #ffaaaa;
+    }
+
+    .key-validate {
+      background: rgba(100, 255, 100, 0.2);
+      border-color: #aaffaa;
+      color: #aaffaa;
+      grid-column: span 3;
+      font-size: 1.2rem;
+    }
+
+    /* ===== MESSAGE DE FÉLICITATIONS ===== */
+    .triumph-box {
+      background: rgba(255, 51, 102, 0.2);
+      border: 3px solid #ff99bb;
+      border-radius: 2rem;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      animation: triumphGlow 2s infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes triumphGlow {
+      0%, 100% { box-shadow: 0 0 50px #ff99bb; }
+      50% { box-shadow: 0 0 100px #ff3366, 0 0 200px #ff99bb; }
+    }
+
+    .triumph-box::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 50% 50%, rgba(255,51,102,0.2), transparent 70%);
+      animation: rotateTriumph 10s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes rotateTriumph {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .triumph-content {
+      position: relative;
+      z-index: 10;
+    }
+
+    .triumph-content h3 {
+      color: #ffccdd;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 20px #ff99bb;
+    }
+
+    /* ===== MESSAGE FINAL ===== */
+    .final-scroll {
+      background: rgba(10, 0, 20, 0.9);
+      border: 3px solid #ff99bb;
+      border-radius: 2rem;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      max-height: 350px;
+      overflow-y: auto;
+      box-shadow: inset 0 0 50px #000, 0 0 60px #ff3366;
+      scrollbar-width: thin;
+      scrollbar-color: #ff3366 #1a0012;
+    }
+
+    .final-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .final-scroll::-webkit-scrollbar-track {
+      background: #1a0012;
+    }
+
+    .final-scroll::-webkit-scrollbar-thumb {
+      background: #ff3366;
+      border-radius: 3px;
+    }
+
+    .final-message-cine {
+      color: #ffdddd;
+      font-size: 0.85rem;
+      line-height: 1.9;
+      text-align: justify;
+      white-space: pre-line;
+      text-shadow: 0 0 5px #ff99bb;
+    }
+
+    .final-message-cine strong {
+      color: #ff99bb;
+      font-size: 1.1rem;
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      animation: heartbeat 1.5s infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); text-shadow: 0 0 40px #ff99bb; }
+    }
+
+    /* ===== BOUTONS CINÉMATIQUES ===== */
+    .btn-cine-ultra {
+      background: transparent;
+      border: 2px solid #ff3366;
+      color: #ffb0c8;
+      border-radius: 3rem;
+      padding: 0.8rem 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 0.8rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+    }
+
+    .btn-cine-ultra::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 51, 102, 0.5), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-cine-ultra:hover::before {
+      left: 100%;
+    }
+
+    .btn-cine-ultra:hover {
+      background: #ff3366;
+      color: black;
+      border-color: #ffccf0;
+      box-shadow: 0 0 50px #ff3b9b;
+      transform: scale(1.05);
+    }
+
+    /* ===== CONFETTIS SPECTACULAIRES ===== */
+    .confetti-cine {
+      position: fixed;
+      font-size: 1.5rem;
+      pointer-events: none;
+      z-index: 1000;
+      animation: confettiCine 4s linear forwards;
+    }
+
+    @keyframes confettiCine {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+    <!-- IFRAME MUSIQUE GLOBALE - À AJOUTER SUR CHAQUE PAGE -->
+    <iframe src="player.html" style="position: absolute; width: 0; height: 0; border: 0;"></iframe>
+  <!-- EFFETS SPECTACULAIRES -->
+  <div class="film-grain"></div>
+  <div class="vignette-cine"></div>
+  <div class="scanlines"></div>
+  <div class="global-glitch"></div>
+  <div class="lightning"></div>
+
+  <div class="cine-container">
+
+    <!-- CADRE PRINCIPAL -->
+    <div class="master-panel">
+      <div class="panel-content">
+
+        <!-- TITRE PRINCIPAL -->
+        <div class="main-title">
+          <h1>CLASSIFICATION MAXIMUM</h1>
+          <div class="title-line"></div>
+          <div class="text-[0.5rem] text-pink-400/70 mt-1">OPÉRATION SAINT-VALENTIN · RAPPORT FINAL</div>
+        </div>
+
+        <!-- PAGE 1 - BRIEFING CINÉMATIQUE -->
+        <div id="briefingPage">
+
+          <div class="briefing-frame">
+            <div class="briefing-title">TRANSMISSION ENTRANTE</div>
+            <div class="briefing-text">
+              <span class="highlight-cine">AGENT CADET MEGAN</span>,<br><br>
+              Les 7 fragments sont récupérés. L'assemblage est en cours.<br><br>
+              Chaque fragment contient un <span class="highlight-cine">code caché</span><br>
+              La vérité est dans les <span class="highlight-cine">majuscules</span>.<br><br>
+              Trouvez la séquence. Ouvrez le coffre. Révélez le message.
+            </div>
+          </div>
+
+          <!-- DOSSIER CLASSIFIÉ -->
+          <div class="dossier-classifie">
+            <div class="dossier-header">
+              <span>FRAGMENTS RÉCUPÉRÉS</span>
+              <span class="classe">TOP SECRET</span>
+            </div>
+            
+            <div class="fragment-line">
+              <div class="mission-tag">M-01</div>
+              <div class="fragment-texte-cine">"Mon amour"</div>
+              <div class="code-mystere">?</div>
+            </div>
+            
+            <div class="fragment-line">
+              <div class="mission-tag">M-02</div>
+              <div class="fragment-texte-cine">"quAnd j'AurAi enfin tRouvé cEt équilibre"</div>
+              <div class="code-mystere">?</div>
+            </div>
+            
+            <div class="fragment-line">
+              <div class="mission-tag">M-03</div>
+              <div class="fragment-texte-cine">"JE T'AIME"</div>
+              <div class="code-mystere">?</div>
+            </div>
+            
+            <div class="fragment-line">
+              <div class="mission-tag">M-04</div>
+              <div class="fragment-texte-cine">"mêMe quAnd jE nE le dis pas"</div>
+              <div class="code-mystere">?</div>
+            </div>
+            
+            <div class="fragment-line">
+              <div class="mission-tag">M-05</div>
+              <div class="fragment-texte-cine">"je POURRAi t'offrir bien plus que ce petit escape game"</div>
+              <div class="code-mystere">?</div>
+            </div>
+            
+            <div class="fragment-line">
+              <div class="mission-tag">M-06</div>
+              <div class="fragment-texte-cine">"et jE vois tous tEs Efforts"</div>
+              <div class="code-mystere">?</div>
+            </div>
+            
+            <div class="fragment-line">
+              <div class="mission-tag">M-07</div>
+              <div class="fragment-texte-cine">"je sAis Que je n'ai pas encore la stabilité que tu mérites"</div>
+              <div class="code-mystere">?</div>
+            </div>
+
+            <div class="text-[0.55rem] text-pink-400/40 text-center mt-3 italic">
+              [ analyse en cours ... ]
+            </div>
+          </div>
+
+          <!-- BOUTON ACCÉDER AU COFFRE -->
+          <button onclick="showVault()" class="btn-cine-ultra mt-4">
+            🔐 ACCÉDER AU COFFRE-FORT
+          </button>
+
+        </div>
+
+        <!-- PAGE 2 - COFFRE-FORT -->
+        <div id="vaultPage" class="hidden">
+
+          <div class="briefing-frame">
+            <div class="briefing-title">VERROUILLAGE NUMÉRIQUE</div>
+            <div class="briefing-text text-center">
+              Entrez le code à 7 chiffres
+            </div>
+          </div>
+
+          <!-- COFFRE FORT -->
+          <div class="vault-cine">
+            <div class="vault-door">
+              <div class="vault-lock" id="vaultLock">🔒</div>
+              <div class="screen-cine" id="codeDisplay">_ _ _ _ _ _ _</div>
+              <div class="text-center text-pink-400 text-xs mt-2" id="codeLength">0/7 chiffres</div>
+            </div>
+          </div>
+
+          <!-- CLAVIER -->
+          <div class="keypad-cine">
+            <div class="key-cine" onclick="addDigit('1')">1</div>
+            <div class="key-cine" onclick="addDigit('2')">2</div>
+            <div class="key-cine" onclick="addDigit('3')">3</div>
+            <div class="key-cine" onclick="addDigit('4')">4</div>
+            <div class="key-cine" onclick="addDigit('5')">5</div>
+            <div class="key-cine" onclick="addDigit('6')">6</div>
+            <div class="key-cine" onclick="addDigit('7')">7</div>
+            <div class="key-cine" onclick="addDigit('8')">8</div>
+            <div class="key-cine" onclick="addDigit('9')">9</div>
+            <div class="key-cine key-delete" onclick="deleteDigit()">⌫</div>
+            <div class="key-cine" onclick="addDigit('0')">0</div>
+            <div class="key-cine key-delete" onclick="clearCode()">✖</div>
+            <div class="key-cine key-validate" onclick="checkCode()" id="validateBtn">🔓 DÉVERROUILLER</div>
+          </div>
+
+          <!-- BOUTON RETOUR -->
+          <button onclick="showBriefing()" class="btn-cine-ultra mt-2" style="border-color: #666; color: #999;">
+            ← RETOUR AU DOSSIER
+          </button>
+
+        </div>
+
+        <!-- PAGE 3 - FÉLICITATIONS + MESSAGE FINAL -->
+        <div id="felicitationPage" class="hidden">
+
+          <div class="triumph-box">
+            <div class="triumph-content">
+              <h3>🎉 MISSION ACCOMPLIE 🎉</h3>
+              <p class="text-pink-200 text-sm">
+                <span class="highlight-cine">AGENT CADET MEGAN</span><br><br>
+                Vous avez déchiffré le code.<br>
+                Les archives sont ouvertes.<br>
+                Le message est à vous.
+              </p>
+              <div class="signature mt-3 text-pink-400">- Direction des Opérations Cœur</div>
+            </div>
+          </div>
+
+          <!-- MESSAGE FINAL -->
+          <div class="final-scroll">
+            <div class="final-message-cine">
+              Depuis le jour où je t'ai vue pour la première fois au bord du terrain, avec ton sourire de cheerleader et ton énergie qui illuminait tout le stade, je n'aurais jamais imaginé que tu deviendrais la personne avec qui je commencerais une vraie histoire, ma première et ma dernière j'espère.
+
+              On s'est rencontrés presque par hasard, moi simple supporter, toi dans ton monde, et pourtant quelque chose s'est passé ce jour‑là, quelque chose que je n'ai compris que bien plus tard.
+
+              Aujourd'hui, je suis devenu cheerleader à mon tour, pas seulement pour être sur le terrain, mais pour être à tes côtés, pour partager ce qui te passionne et construire avec toi des souvenirs qui resteront toute une vie.
+
+              On a des projets, des rêves, des envies d'avenir, et même si la route n'a pas toujours été simple, même si on a dû affronter des embûches, je crois profondément en nous.
+
+              J'espère qu'on saura traverser tout ça ensemble, main dans la main, et profiter au maximum de chaque moment que la vie nous offre.
+
+              Parce qu'au fond, il n'y a rien que je souhaite plus que de vivre cette vie avec toi, entièrement, sincèrement, passionnément.
+
+              <strong>merveilles ton amour ❤️</strong>
+            </div>
+          </div>
+
+          <!-- BOUTON RECOMMENCER -->
+          <button onclick="restartGame()" class="btn-cine-ultra mt-4">
+            🔄 RECOMMENCER L'AVENTURE
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========== CONFIGURATION ==========
+    const codeSecret = "1574632"; // Majuscules: 1 5 7 4 6 3 2
+    
+    let codeSaisi = [];
+
+    // Navigation
+    window.showVault = function() {
+      document.getElementById('briefingPage').classList.add('hidden');
+      document.getElementById('vaultPage').classList.remove('hidden');
+    };
+
+    window.showBriefing = function() {
+      document.getElementById('vaultPage').classList.add('hidden');
+      document.getElementById('briefingPage').classList.remove('hidden');
+      clearCode();
+    };
+
+    // Gestion du clavier
+    window.addDigit = function(digit) {
+      if (codeSaisi.length < 7) {
+        codeSaisi.push(digit);
+        updateDisplay();
+      }
+    };
+
+    window.deleteDigit = function() {
+      codeSaisi.pop();
+      updateDisplay();
+    };
+
+    window.clearCode = function() {
+      codeSaisi = [];
+      updateDisplay();
+    };
+
+    function updateDisplay() {
+      const display = document.getElementById('codeDisplay');
+      const lengthDisplay = document.getElementById('codeLength');
+      const lock = document.getElementById('vaultLock');
+      
+      let affichage = '';
+      for (let i = 0; i < 7; i++) {
+        if (i < codeSaisi.length) {
+          affichage += codeSaisi[i] + ' ';
+        } else {
+          affichage += '_ ';
+        }
+      }
+      display.textContent = affichage;
+      lengthDisplay.textContent = codeSaisi.length + '/7 chiffres';
+      
+      // Animer le cadenas
+      if (codeSaisi.length === 7) {
+        lock.innerHTML = '🔓';
+        lock.style.animation = 'lockPulse 0.5s infinite';
+      } else {
+        lock.innerHTML = '🔒';
+      }
+    }
+
+    // Vérifier le code
+    window.checkCode = function() {
+      if (codeSaisi.length !== 7) {
+        alert("❌ CODE INCOMPLET");
+        return;
+      }
+      
+      const code = codeSaisi.join('');
+      
+      if (code === codeSecret) {
+        // Succès épique
+        document.getElementById('vaultPage').classList.add('hidden');
+        document.getElementById('felicitationPage').classList.remove('hidden');
+        
+        // Confettis spectaculaires
+        for (let i = 0; i < 100; i++) {
+          setTimeout(() => creerConfetti(), i * 30);
+        }
+        
+      } else {
+        alert("❌ CODE INVALIDE · ACCÈS REFUSÉ");
+        clearCode();
+      }
+    };
+
+    // Confettis
+    // ========== CRÉER DES CONFETTIS ==========
+    function creerConfetti() {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.innerHTML = ['❤️', '🧡', '💛', '💚', '💙', '💜', '💝', '💖', '💗'][Math.floor(Math.random() * 9)];
+      confetti.style.left = Math.random() * 100 + '%';
+      confetti.style.animationDuration = (2 + Math.random() * 3) + 's';
+      confetti.style.fontSize = (1 + Math.random() * 2) + 'rem';
+      document.body.appendChild(confetti);
+      
+      setTimeout(() => confetti.remove(), 5000);
+    }
+
+    // ========== RECOMMENCER ==========
+    window.restartGame = function() {
+      window.location.href = 'index.html';
+    };
+
+  </script>
+
+</body>
+</html>
